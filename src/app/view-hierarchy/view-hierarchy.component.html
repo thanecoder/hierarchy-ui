@@ -1,0 +1,63 @@
+<div *ngFor="let nodes of employeesTeams; let i = index">
+  <div *ngIf="nodes.teamId == 0">
+    {{ "| -- " + nodes.teamHeadDisplayName }}
+    <ng-container
+      [ngTemplateOutlet]="teamHeadActionContainer"
+      [ngTemplateOutletContext]="{ employeeId: nodes.teamHead }"
+    ></ng-container>
+  </div>
+  <div *ngIf="nodes.teamId != 0" class="first-level">
+    <br />
+    {{ "| -- " + nodes.teamHeadDisplayName }}
+    <ng-container
+      [ngTemplateOutlet]="teamHeadActionContainer"
+      [ngTemplateOutletContext]="{ employeeId: nodes.teamHead }"
+    ></ng-container>
+    <br />
+    <div *ngIf="nodes.childTeams.length == 0 && nodes.teamId != 0">
+      <span style="margin-left: 3%">{{
+        nodes.childTeams.length == 0 ? "| -- Team" : ""
+      }}</span>
+      <div
+        *ngFor="let teamMember of nodes.teamMembers; let i = index"
+        class="team-level"
+      >
+        <br />
+        {{ "| -- " + (teamMember.isTeamLead ? "Team Lead" : "Team Member") }}
+        <ng-container
+          [ngTemplateOutlet]="teamMemberActionContainer"
+          [ngTemplateOutletContext]="{ employeeId: teamMember.id }"
+        ></ng-container>
+      </div>
+    </div>
+    <div *ngIf="nodes.childTeams.length > 0 && nodes.teamId != 0">
+      <div *ngFor="let childTeam of nodes.childTeams; let i = index">
+        <span style="margin-left: 3%">{{ "| -- Team " + (i + 1) }}</span>
+        <div
+          *ngFor="let childTeamMember of childTeam.teamMembers"
+          class="team-level"
+        >
+          <br />
+          | -- {{ childTeamMember.isTeamLead ? "Team Lead" : "Team Member" }}
+          <ng-container
+            [ngTemplateOutlet]="teamMemberActionContainer"
+            [ngTemplateOutletContext]="{ employeeId: childTeamMember.id }"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #teamHeadActionContainer let-employeeId="employeeId">
+  <div>
+    <i class="bi bi-eye" (click)="viewEmployee(employeeId)"></i>
+    <i class="bi bi-pencil" (click)="editEmployee(employeeId)"></i>
+    <i class="bi bi-plus-circle" (click)="addTeamMember()"></i>
+  </div>
+</ng-template>
+<ng-template #teamMemberActionContainer let-employeeId="employeeId">
+  <div>
+    <i class="bi bi-eye" (click)="viewEmployee(employeeId)"></i>
+    <i class="bi bi-pencil" (click)="editEmployee(employeeId)"></i>
+  </div>
+</ng-template>

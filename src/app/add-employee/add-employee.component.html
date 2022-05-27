@@ -1,0 +1,101 @@
+<form class="container" [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+  <div class="row mb-3">
+    <label for="name" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        formControlName="name"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="email" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        formControlName="email"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+    <div class="col-sm-10">
+      <input
+        type="tel"
+        class="form-control"
+        id="phone"
+        name="phone"
+        formControlName="phone"
+      />
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="department" class="col-sm-3 col-form-label">Department</label>
+    <div class="col-sm-9">
+      <input
+        type="department"
+        class="form-control"
+        id="department"
+        name="department"
+        formControlName="department"
+      />
+    </div>
+  </div>
+  <div>
+    <label for="isTeamLead" class="form-check-label">Is Team Lead ?</label>
+    <div class="form-check">
+      <input
+        type="radio"
+        class="form-check-input"
+        id="yesTeamLead"
+        value="true"
+        formControlName="isTeamLead"
+      />
+      <label for="yesTeamLead" class="form-check-label">Yes</label>
+    </div>
+    <div class="form-check">
+      <input
+        type="radio"
+        class="form-check-input"
+        id="noTeamLead"
+        value="false"
+        formControlName="isTeamLead"
+      /><label for="noTeamLead" class="form-check-label">No</label>
+    </div>
+  </div>
+  <div>
+    <label class="form-check-label" for="isTeamHead">Is Team Head ?</label>
+    <div class="form-check">
+      <input
+        type="radio"
+        class="form-check-input"
+        id="yesTeamHead"
+        value="true"
+        formControlName="isTeamHead"
+      /><label for="yesTeamHead" class="form-check-label">Yes</label>
+    </div>
+    <div class="form-check">
+      <input
+        type="radio"
+        class="form-check-input"
+        id="noTeamHead"
+        value="false"
+        formControlName="isTeamHead"
+      /><label for="noTeamHead" class="form-check-label">No</label>
+    </div>
+  </div>
+  <hr />
+  <button
+    type="submit"
+    [disabled]="!employeeForm.valid"
+    class="btn btn-primary"
+  >
+    Add Employee
+  </button>
+</form>
