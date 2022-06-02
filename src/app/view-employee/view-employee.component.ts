@@ -7,17 +7,11 @@ import { AppDataService } from '../app-data.service';
   styleUrls: ['./view-employee.component.scss'],
 })
 export class ViewEmployeeComponent implements OnInit {
-  @Input() employeeId: any;
-
-  selectedEmployee: any = {};
+  @Input() employee: any;
 
   constructor(private appData: AppDataService) {}
 
-  ngOnInit(): void {}
-
-  getEmployee() {
-    // console.log(this.appData.getEmployee(this.employeeId));
-
-    this.selectedEmployee = this.appData.getEmployee(this.employeeId);
+  ngOnInit(): void {
+    console.log('employee', this.employee);
   }
 }

@@ -1,17 +1,13 @@
 <div class="card text-bg-light" style="width: 50rem">
   <div class="card-body">
-    <h5 class="card-title">Name : {{ selectedEmployee.name }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">
-      ID : {{ selectedEmployee.id }}
-    </h6>
-    <h6 class="card-subtitle mb-2 text-muted">
-      Phone : {{ selectedEmployee.phone }}
-    </h6>
+    <h5 class="card-title">Name : {{ employee.name }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">ID : {{ employee.id }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">Phone : {{ employee.phone }}</h6>
     <p class="card-text">
-      Is Team Lead : {{ selectedEmployee.isTeamLead ? "Yes" : "No" }}
+      Is Team Lead : {{ employee.isTeamLead ? "Yes" : "No" }}
       <br />
-      Is Team Head : {{ selectedEmployee.isTeamHead ? "Yes" : "No" }}
+      Is Team Head : {{ employee.isTeamHead ? "Yes" : "No" }}
     </p>
-    Email : <a href="#" class="card-link">{{ selectedEmployee.email }}</a>
+    Email : <a href="#" class="card-link">{{ employee.email }}</a>
   </div>
 </div>

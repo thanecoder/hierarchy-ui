@@ -11,19 +11,31 @@ export class ViewHierarchyComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    console.log('employeeTeams', this.employeesTeams);
-  }
+  ngOnInit(): void {}
 
-  viewEmployee(employeeId: any) {
+  viewEmployee(employeeId: any, fromTeamHead: boolean) {
     console.log(employeeId);
-    this.actionEvent.emit({ op: 'view', data: employeeId });
+    this.actionEvent.emit({
+      op: 'view',
+      data: employeeId,
+      fromTeamHead: fromTeamHead,
+    });
   }
 
-  editEmployee(employeeId: any) {
+  editEmployee(employeeId: any, fromTeamHead: boolean) {
     console.log(employeeId);
-    this.actionEvent.emit({ op: 'edit', data: employeeId });
+    this.actionEvent.emit({
+      op: 'edit',
+      data: employeeId,
+      fromTeamHead: fromTeamHead,
+    });
   }
 
-  addTeamMember() {}
+  addTeamMember(teamId: any) {
+    this.actionEvent.emit({
+      op: 'add',
+      data: teamId,
+      fromTeamHead: true,
+    });
+  }
 }

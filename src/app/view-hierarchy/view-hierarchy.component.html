@@ -3,7 +3,7 @@
     {{ "| -- " + nodes.teamHeadDisplayName }}
     <ng-container
       [ngTemplateOutlet]="teamHeadActionContainer"
-      [ngTemplateOutletContext]="{ employeeId: nodes.teamHead }"
+      [ngTemplateOutletContext]="{ teamId: nodes.teamId }"
     ></ng-container>
   </div>
   <div *ngIf="nodes.teamId != 0" class="first-level">
@@ -11,7 +11,7 @@
     {{ "| -- " + nodes.teamHeadDisplayName }}
     <ng-container
       [ngTemplateOutlet]="teamHeadActionContainer"
-      [ngTemplateOutletContext]="{ employeeId: nodes.teamHead }"
+      [ngTemplateOutletContext]="{ teamId: nodes.teamId }"
     ></ng-container>
     <br />
     <div *ngIf="nodes.childTeams.length == 0 && nodes.teamId != 0">
@@ -48,16 +48,16 @@
     </div>
   </div>
 </div>
-<ng-template #teamHeadActionContainer let-employeeId="employeeId">
+<ng-template #teamHeadActionContainer let-teamId="teamId">
   <div>
-    <i class="bi bi-eye" (click)="viewEmployee(employeeId)"></i>
-    <i class="bi bi-pencil" (click)="editEmployee(employeeId)"></i>
-    <i class="bi bi-plus-circle" (click)="addTeamMember()"></i>
+    <i class="bi bi-eye" (click)="viewEmployee(teamId, true)"></i>
+    <i class="bi bi-pencil" (click)="editEmployee(teamId, true)"></i>
+    <i class="bi bi-plus-circle" (click)="addTeamMember(teamId)"></i>
   </div>
 </ng-template>
 <ng-template #teamMemberActionContainer let-employeeId="employeeId">
   <div>
-    <i class="bi bi-eye" (click)="viewEmployee(employeeId)"></i>
-    <i class="bi bi-pencil" (click)="editEmployee(employeeId)"></i>
+    <i class="bi bi-eye" (click)="viewEmployee(employeeId, false)"></i>
+    <i class="bi bi-pencil" (click)="editEmployee(employeeId, false)"></i>
   </div>
 </ng-template>

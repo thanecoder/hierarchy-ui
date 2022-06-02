@@ -23,126 +23,8 @@ export interface Team {
 })
 export class AppDataService {
   DEPT_ORGANIZATION: string = 'ORGANIZATION';
-  public employees: Array<Employee> = [
-    {
-      name: 'ABC',
-      id: 0,
-      phone: '989898989',
-      email: 'abc@email.com',
-      isTeamHead: true,
-      isTeamLead: false,
-      department: this.DEPT_ORGANIZATION,
-    },
-    {
-      name: 'DEF',
-      id: 1,
-      phone: '1234567890',
-      email: 'DEF@EMAIL.COM',
-      isTeamHead: true,
-      isTeamLead: false,
-      department: 'Staff/HR',
-    },
-    {
-      name: 'PQR',
-      id: 2,
-      phone: '22222222222',
-      email: 'PQR@email.com',
-      isTeamHead: true,
-      isTeamLead: false,
-      department: 'Engineering',
-    },
-    {
-      name: 'XYZ',
-      id: 3,
-      phone: '98989889787',
-      email: 'XYZ@EMAIL.COM',
-      isTeamHead: false,
-      isTeamLead: true,
-      department: 'Staff/HR',
-    },
-    {
-      name: 'QWE',
-      id: 4,
-      phone: '444444444',
-      email: 'QWE@EMAIL.COM',
-      isTeamHead: false,
-      isTeamLead: false,
-      department: 'Staff/HR',
-    },
-    {
-      name: 'QWE',
-      id: 5,
-      phone: '444444444',
-      email: 'QWE@EMAIL.COM',
-      isTeamHead: false,
-      isTeamLead: true,
-      department: 'Engineering',
-    },
-    {
-      name: 'QWE',
-      id: 6,
-      phone: '444444444',
-      email: 'QWE@EMAIL.COM',
-      isTeamHead: false,
-      isTeamLead: false,
-      department: 'Engineering',
-    },
-    {
-      name: 'QWE',
-      id: 7,
-      phone: '444444444',
-      email: 'QWE@EMAIL.COM',
-      isTeamHead: false,
-      isTeamLead: true,
-      department: 'Engineering',
-    },
-    {
-      name: 'QWE',
-      id: 8,
-      phone: '444444444',
-      email: 'QWE@EMAIL.COM',
-      isTeamHead: false,
-      isTeamLead: false,
-      department: 'Engineering',
-    },
-  ];
-  public teams: Array<Team> = [
-    {
-      teamId: 0,
-      teamHead: 0,
-      department: this.DEPT_ORGANIZATION,
-      teamMembers: [1, 2],
-      childTeams: [1, 2],
-    },
-    {
-      teamId: 1,
-      teamHead: 1,
-      department: 'Staff/HR',
-      teamMembers: [3, 4],
-      childTeams: [],
-    },
-    {
-      teamId: 2,
-      teamHead: 2,
-      department: 'Engineering',
-      teamMembers: [],
-      childTeams: [3, 4],
-    },
-    {
-      teamId: 3,
-      teamHead: 2,
-      department: 'Engineering',
-      teamMembers: [5, 6],
-      childTeams: [],
-    },
-    {
-      teamId: 4,
-      teamHead: 2,
-      department: 'Engineering',
-      teamMembers: [7, 8],
-      childTeams: [],
-    },
-  ];
+  public employees: Array<Employee> = [];
+  public teams: Array<Team> = [];
 
   constructor() {}
 
@@ -155,25 +37,102 @@ export class AppDataService {
   }
 
   addEmployee(employee: Employee, teamId: number) {
+    console.log('teamId', teamId);
+    console.log('employee.isTeamHead', employee.isTeamHead);
+
     employee.id = this.employees.length == 0 ? 0 : this.employees.length;
-    this.addEmployeeToTeam(employee.id, teamId);
+    if (employee.id == 0 && this.teams.length == 0) {
+      this.addEmployeeToTeam(
+        employee.id,
+        teamId,
+        employee.isTeamHead,
+        this.DEPT_ORGANIZATION
+      );
+    } else {
+      this.addEmployeeToTeam(
+        employee.id,
+        teamId,
+        employee.isTeamHead,
+        employee.department
+      );
+    }
     this.employees.push(employee);
   }
 
-  addEmployeeToTeam(employeeId: number, teamId: number) {
-    if (teamId == 0) {
+  addEmployeeToTeam(
+    employeeId: number,
+    teamId: number,
+    isTeamHead: boolean,
+    department: any
+  ) {
+    let currentTeam = this.teams.filter(
+      (team) => team.department == department
+    );
+    if (teamId == 0 && currentTeam.length == 0) {
       this.teams.push({
-        teamId: 0,
-        teamHead: 0,
-        department: this.DEPT_ORGANIZATION,
+        teamId: this.employees.length == 0 ? 0 : this.employees.length,
+        teamHead: employeeId,
+        department: department,
         teamMembers: [],
         childTeams: [],
       });
+    } else {
+      if (isTeamHead) {
+        let newTeamId = this.teams.length;
+        this.teams.push({
+          teamId: newTeamId,
+          teamHead: employeeId,
+          department: department,
+          teamMembers: [],
+          childTeams: [],
+        });
+        currentTeam[0].teamMembers.push(employeeId);
+        currentTeam[0].childTeams.push(newTeamId);
+      } else {
+        currentTeam[0].teamMembers.push(employeeId);
+      }
     }
-    this.teams[teamId].teamMembers.push(employeeId);
   }
 
   getEmployee(selectedEmployee: any) {
     return this.employees.filter((emp) => emp.id == selectedEmployee)[0];
+  }
+
+  saveEmployeesToStorage() {
+    localStorage.setItem('employees', JSON.stringify(this.employees));
+  }
+
+  saveTeamsToStorage() {
+    localStorage.setItem('teams', JSON.stringify(this.teams));
+  }
+
+  getEmployeesFromStorage() {
+    const emps = localStorage.getItem('employees');
+    if (emps) {
+      this.employees = JSON.parse(emps);
+    }
+  }
+
+  getTeamsFromStorage() {
+    const teams = localStorage.getItem('teams');
+    if (teams) {
+      this.teams = JSON.parse(teams);
+    }
+  }
+
+  getTeamHead(teamId: any) {
+    console.log('teamId', teamId);
+    if (teamId != null) {
+      console.log('teams', this.teams);
+      let selectedTeamHead = this.teams.filter(
+        (team) => team.teamId == teamId
+      )[0].teamHead;
+      let selectedEmployee = this.employees.filter(
+        (emp) => emp.id == selectedTeamHead
+      )[0];
+      return selectedEmployee;
+    } else {
+      return {};
+    }
   }
 }

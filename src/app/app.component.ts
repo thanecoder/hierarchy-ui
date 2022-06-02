@@ -23,9 +23,15 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.appData.getEmployeesFromStorage();
+    this.appData.getTeamsFromStorage();
     this.getEmployees();
     this.getTeams();
     this.getFormattedTeam();
+    setInterval(() => {
+      this.appData.saveTeamsToStorage();
+      this.appData.saveEmployeesToStorage();
+    }, 1000);
   }
 
   getEmployees() {
@@ -65,12 +71,19 @@ export class AppComponent implements OnInit {
 
   employeeAction(event: any) {
     console.log('event', event);
-    this.selectedEmployee = event.data;
+    let selectedEmployeeId = event.data;
+    let fromTeamHead = event.fromTeamHead;
     if (event.op == 'view') {
       this.viewMode = true;
     } else {
       this.viewMode = false;
     }
-    this.viewEmployee.getEmployee();
+    if (!fromTeamHead) {
+      this.selectedEmployee = this.appData.getEmployee(selectedEmployeeId);
+    } else {
+      console.log('selectedEmployeeId', selectedEmployeeId);
+      this.selectedEmployee = this.appData.getTeamHead(selectedEmployeeId);
+      this.selectedTeamId = selectedEmployeeId;
+    }
   }
 }

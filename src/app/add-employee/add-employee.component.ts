@@ -24,10 +24,23 @@ export class AddEmployeeComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private appData: AppDataService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let teams = this.appData.getTeams();
+    if (teams.length == 0) {
+      this.employeeForm.controls['department'].patchValue(
+        this.appData.DEPT_ORGANIZATION
+      );
+      this.employeeForm.controls['department'].disabled;
+    }
+  }
 
   addEmployee() {
-    console.log(this.employeeForm.value);
+    console.log('this.employeeForm.value', this.employeeForm.value);
+    console.log('this.teamId', this.teamId);
+    this.employeeForm.value.isTeamLead =
+      this.employeeForm.value.isTeamLead == 'true' ? true : false;
+    this.employeeForm.value.isTeamHead =
+      this.employeeForm.value.isTeamHead == 'true' ? true : false;
     this.appData.addEmployee(this.employeeForm.value, this.teamId);
     this.newEmployeeEvent.emit('Employee Added');
   }
