@@ -11,7 +11,5 @@ export class ViewEmployeeComponent implements OnInit {
 
   constructor(private appData: AppDataService) {}
 
-  ngOnInit(): void {
-    console.log('employee', this.employee);
-  }
+  ngOnInit(): void {}
 }

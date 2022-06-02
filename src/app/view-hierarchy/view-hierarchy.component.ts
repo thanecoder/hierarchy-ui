@@ -1,3 +1,4 @@
+import { AppDataService } from './../app-data.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -9,12 +10,14 @@ export class ViewHierarchyComponent implements OnInit {
   @Input() employeesTeams: Array<any> = [];
   @Output() actionEvent = new EventEmitter<any>();
 
-  constructor() {}
+  constructor(private appData: AppDataService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // console.log('employeesTeams', this.employeesTeams);
+  }
 
   viewEmployee(employeeId: any, fromTeamHead: boolean) {
-    console.log(employeeId);
+    // console.log(employeeId);
     this.actionEvent.emit({
       op: 'view',
       data: employeeId,
@@ -23,7 +26,7 @@ export class ViewHierarchyComponent implements OnInit {
   }
 
   editEmployee(employeeId: any, fromTeamHead: boolean) {
-    console.log(employeeId);
+    // console.log(employeeId);
     this.actionEvent.emit({
       op: 'edit',
       data: employeeId,
@@ -32,6 +35,18 @@ export class ViewHierarchyComponent implements OnInit {
   }
 
   addTeamMember(teamId: any) {
+    // console.log('teamId', teamId);
+    this.actionEvent.emit({
+      op: 'add',
+      data: teamId,
+      fromTeamHead: true,
+    });
+  }
+
+  addTeamMemberToTeamLead(employeeId: any) {
+    // console.log('employeeId', employeeId);
+    let teamId = this.appData.getTeamId(employeeId);
+    // console.log('addTeamMemberToTeamLead teamId', teamId);
     this.actionEvent.emit({
       op: 'add',
       data: teamId,

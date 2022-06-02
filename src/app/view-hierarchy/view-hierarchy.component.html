@@ -41,7 +41,10 @@
           | -- {{ childTeamMember.isTeamLead ? "Team Lead" : "Team Member" }}
           <ng-container
             [ngTemplateOutlet]="teamMemberActionContainer"
-            [ngTemplateOutletContext]="{ employeeId: childTeamMember.id }"
+            [ngTemplateOutletContext]="{
+              employeeId: childTeamMember.id,
+              isTeamLead: childTeamMember.isTeamLead
+            }"
           ></ng-container>
         </div>
       </div>
@@ -55,9 +58,18 @@
     <i class="bi bi-plus-circle" (click)="addTeamMember(teamId)"></i>
   </div>
 </ng-template>
-<ng-template #teamMemberActionContainer let-employeeId="employeeId">
+<ng-template
+  #teamMemberActionContainer
+  let-employeeId="employeeId"
+  let-isTeamLead="isTeamLead"
+>
   <div>
     <i class="bi bi-eye" (click)="viewEmployee(employeeId, false)"></i>
     <i class="bi bi-pencil" (click)="editEmployee(employeeId, false)"></i>
+    <i
+      *ngIf="isTeamLead == true"
+      class="bi bi-plus-circle"
+      (click)="addTeamMemberToTeamLead(employeeId)"
+    ></i>
   </div>
 </ng-template>

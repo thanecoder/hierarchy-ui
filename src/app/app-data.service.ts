@@ -37,15 +37,13 @@ export class AppDataService {
   }
 
   addEmployee(employee: Employee, teamId: number) {
-    console.log('teamId', teamId);
-    console.log('employee.isTeamHead', employee.isTeamHead);
-
     employee.id = this.employees.length == 0 ? 0 : this.employees.length;
     if (employee.id == 0 && this.teams.length == 0) {
       this.addEmployeeToTeam(
         employee.id,
         teamId,
-        employee.isTeamHead,
+        true,
+        false,
         this.DEPT_ORGANIZATION
       );
     } else {
@@ -53,6 +51,7 @@ export class AppDataService {
         employee.id,
         teamId,
         employee.isTeamHead,
+        employee.isTeamLead,
         employee.department
       );
     }
@@ -63,11 +62,10 @@ export class AppDataService {
     employeeId: number,
     teamId: number,
     isTeamHead: boolean,
+    isTeamLead: boolean,
     department: any
   ) {
-    let currentTeam = this.teams.filter(
-      (team) => team.department == department
-    );
+    let currentTeam = this.teams.filter((team) => team.teamId == teamId);
     if (teamId == 0 && currentTeam.length == 0) {
       this.teams.push({
         teamId: this.employees.length == 0 ? 0 : this.employees.length,
@@ -77,16 +75,18 @@ export class AppDataService {
         childTeams: [],
       });
     } else {
-      if (isTeamHead) {
+      if (isTeamHead || isTeamLead) {
         let newTeamId = this.teams.length;
         this.teams.push({
           teamId: newTeamId,
           teamHead: employeeId,
           department: department,
-          teamMembers: [],
+          teamMembers: isTeamLead ? [employeeId] : [],
           childTeams: [],
         });
-        currentTeam[0].teamMembers.push(employeeId);
+        if (currentTeam[0].teamId == 0) {
+          currentTeam[0].teamMembers.push(employeeId);
+        }
         currentTeam[0].childTeams.push(newTeamId);
       } else {
         currentTeam[0].teamMembers.push(employeeId);
@@ -121,9 +121,7 @@ export class AppDataService {
   }
 
   getTeamHead(teamId: any) {
-    console.log('teamId', teamId);
     if (teamId != null) {
-      console.log('teams', this.teams);
       let selectedTeamHead = this.teams.filter(
         (team) => team.teamId == teamId
       )[0].teamHead;
@@ -134,5 +132,15 @@ export class AppDataService {
     } else {
       return {};
     }
+  }
+
+  getTeamId(employeeId: any) {
+    let teamId = -1;
+    for (let i = 0; i < this.teams.length; i++) {
+      if (this.teams[i].teamHead == employeeId) {
+        teamId = this.teams[i].teamId;
+      }
+    }
+    return teamId;
   }
 }

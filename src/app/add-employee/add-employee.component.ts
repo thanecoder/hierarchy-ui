@@ -35,8 +35,6 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   addEmployee() {
-    console.log('this.employeeForm.value', this.employeeForm.value);
-    console.log('this.teamId', this.teamId);
     this.employeeForm.value.isTeamLead =
       this.employeeForm.value.isTeamLead == 'true' ? true : false;
     this.employeeForm.value.isTeamHead =

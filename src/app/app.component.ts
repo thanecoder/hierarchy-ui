@@ -70,7 +70,6 @@ export class AppComponent implements OnInit {
   }
 
   employeeAction(event: any) {
-    console.log('event', event);
     let selectedEmployeeId = event.data;
     let fromTeamHead = event.fromTeamHead;
     if (event.op == 'view') {
@@ -81,7 +80,6 @@ export class AppComponent implements OnInit {
     if (!fromTeamHead) {
       this.selectedEmployee = this.appData.getEmployee(selectedEmployeeId);
     } else {
-      console.log('selectedEmployeeId', selectedEmployeeId);
       this.selectedEmployee = this.appData.getTeamHead(selectedEmployeeId);
       this.selectedTeamId = selectedEmployeeId;
     }
