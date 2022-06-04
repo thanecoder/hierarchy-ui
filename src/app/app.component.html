@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="list-block">
     <app-view-hierarchy
+      style="display: flex; flex-direction: column; width: 100%"
       [employeesTeams]="employeesTeams"
       (actionEvent)="employeeAction($event)"
     ></app-view-hierarchy>

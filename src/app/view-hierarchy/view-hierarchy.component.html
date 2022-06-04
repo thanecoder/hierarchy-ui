@@ -15,15 +15,14 @@
     ></ng-container>
     <br />
     <div *ngIf="nodes.childTeams.length == 0 && nodes.teamId != 0">
-      <span style="margin-left: 3%">{{
-        nodes.childTeams.length == 0 ? "| -- Team" : ""
-      }}</span>
       <div
         *ngFor="let teamMember of nodes.teamMembers; let i = index"
         class="team-level"
       >
         <br />
-        {{ "| -- " + (teamMember.isTeamLead ? "Team Lead" : "Team Member") }}
+        &nbsp;{{
+          teamMember.isTeamLead ? "| -- Team Lead" : "| -- Team Member"
+        }}
         <ng-container
           [ngTemplateOutlet]="teamMemberActionContainer"
           [ngTemplateOutletContext]="{ employeeId: teamMember.id }"
@@ -38,7 +37,9 @@
           class="team-level"
         >
           <br />
-          | -- {{ childTeamMember.isTeamLead ? "Team Lead" : "Team Member" }}
+          {{
+            childTeamMember.isTeamLead ? "| -- Team Lead" : "| -- Team Member"
+          }}
           <ng-container
             [ngTemplateOutlet]="teamMemberActionContainer"
             [ngTemplateOutletContext]="{
@@ -52,18 +53,18 @@
   </div>
 </div>
 <ng-template #teamHeadActionContainer let-teamId="teamId">
-  <div>
+  <span>
     <i class="bi bi-eye" (click)="viewEmployee(teamId, true)"></i>
     <i class="bi bi-pencil" (click)="editEmployee(teamId, true)"></i>
     <i class="bi bi-plus-circle" (click)="addTeamMember(teamId)"></i>
-  </div>
+  </span>
 </ng-template>
 <ng-template
   #teamMemberActionContainer
   let-employeeId="employeeId"
   let-isTeamLead="isTeamLead"
 >
-  <div>
+  <span>
     <i class="bi bi-eye" (click)="viewEmployee(employeeId, false)"></i>
     <i class="bi bi-pencil" (click)="editEmployee(employeeId, false)"></i>
     <i
@@ -71,5 +72,5 @@
       class="bi bi-plus-circle"
       (click)="addTeamMemberToTeamLead(employeeId)"
     ></i>
-  </div>
+  </span>
 </ng-template>
