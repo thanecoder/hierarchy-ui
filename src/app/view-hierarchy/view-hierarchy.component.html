@@ -3,7 +3,11 @@
     {{ "| -- " + nodes.teamHeadDisplayName }}
     <ng-container
       [ngTemplateOutlet]="teamHeadActionContainer"
-      [ngTemplateOutletContext]="{ teamId: nodes.teamId }"
+      [ngTemplateOutletContext]="{
+        teamId: nodes.teamId,
+        fromCEO: true,
+        fromTeamHead: false
+      }"
     ></ng-container>
   </div>
   <div *ngIf="nodes.teamId != 0" class="first-level">
@@ -11,7 +15,11 @@
     {{ "| -- " + nodes.teamHeadDisplayName }}
     <ng-container
       [ngTemplateOutlet]="teamHeadActionContainer"
-      [ngTemplateOutletContext]="{ teamId: nodes.teamId }"
+      [ngTemplateOutletContext]="{
+        teamId: nodes.teamId,
+        fromCEO: false,
+        fromTeamHead: true
+      }"
     ></ng-container>
     <br />
     <div *ngIf="nodes.childTeams.length == 0 && nodes.teamId != 0">
@@ -52,11 +60,23 @@
     </div>
   </div>
 </div>
-<ng-template #teamHeadActionContainer let-teamId="teamId">
+<ng-template
+  #teamHeadActionContainer
+  let-teamId="teamId"
+  let-fromCEO="fromCEO"
+  let-fromTeamHead="fromTeamHead"
+>
   <span>
-    <i class="bi bi-eye" (click)="viewEmployee(teamId, true)"></i>
-    <i class="bi bi-pencil" (click)="editEmployee(teamId, true)"></i>
-    <i class="bi bi-plus-circle" (click)="addTeamMember(teamId)"></i>
+    <i
+      class="bi bi-eye"
+      style="margin: 0.3%"
+      (click)="viewEmployee(teamId, true)"
+    ></i>
+    <i
+      class="bi bi-plus-circle"
+      style="margin: 0.3%"
+      (click)="addTeamMember(teamId, fromCEO, fromTeamHead)"
+    ></i>
   </span>
 </ng-template>
 <ng-template
@@ -65,11 +85,15 @@
   let-isTeamLead="isTeamLead"
 >
   <span>
-    <i class="bi bi-eye" (click)="viewEmployee(employeeId, false)"></i>
-    <i class="bi bi-pencil" (click)="editEmployee(employeeId, false)"></i>
+    <i
+      class="bi bi-eye"
+      style="margin: 1%"
+      (click)="viewEmployee(employeeId, false)"
+    ></i>
     <i
       *ngIf="isTeamLead == true"
       class="bi bi-plus-circle"
+      style="margin: 1%"
       (click)="addTeamMemberToTeamLead(employeeId)"
     ></i>
   </span>

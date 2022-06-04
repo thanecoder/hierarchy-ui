@@ -10,7 +10,10 @@
     <app-add-employee
       *ngIf="!viewMode"
       [teamId]="selectedTeamId"
-      (newEmployeeEvent)="getEmployees()"
+      (newEmployeeEvent)="refreshUI()"
+      [fromCEO]="fromCEO"
+      [fromTeamHead]="fromTeamHead"
+      [fromTeamLead]="fromTeamLead"
     >
     </app-add-employee>
     <app-view-employee

@@ -12,45 +12,36 @@ export class ViewHierarchyComponent implements OnInit {
 
   constructor(private appData: AppDataService) {}
 
-  ngOnInit(): void {
-    // console.log('employeesTeams', this.employeesTeams);
-  }
+  ngOnInit(): void {}
 
   viewEmployee(employeeId: any, fromTeamHead: boolean) {
-    // console.log(employeeId);
     this.actionEvent.emit({
       op: 'view',
       data: employeeId,
+      fromCEO: false,
       fromTeamHead: fromTeamHead,
+      fromTeamLead: false,
     });
   }
 
-  editEmployee(employeeId: any, fromTeamHead: boolean) {
-    // console.log(employeeId);
-    this.actionEvent.emit({
-      op: 'edit',
-      data: employeeId,
-      fromTeamHead: fromTeamHead,
-    });
-  }
-
-  addTeamMember(teamId: any) {
-    // console.log('teamId', teamId);
+  addTeamMember(teamId: any, fromCEO: boolean, fromTeamHead: boolean) {
     this.actionEvent.emit({
       op: 'add',
       data: teamId,
-      fromTeamHead: true,
+      fromCEO: fromCEO,
+      fromTeamHead: fromTeamHead,
+      fromTeamLead: false,
     });
   }
 
   addTeamMemberToTeamLead(employeeId: any) {
-    // console.log('employeeId', employeeId);
     let teamId = this.appData.getTeamId(employeeId);
-    // console.log('addTeamMemberToTeamLead teamId', teamId);
     this.actionEvent.emit({
       op: 'add',
       data: teamId,
-      fromTeamHead: true,
+      fromCEO: false,
+      fromTeamHead: false,
+      fromTeamLead: true,
     });
   }
 }

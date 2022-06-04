@@ -10,27 +10,32 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./add-employee.component.scss'],
 })
 export class AddEmployeeComponent implements OnInit {
+  teams: any;
   @Input() teamId!: number;
+  @Input() fromCEO: boolean = false;
+  @Input() fromTeamHead: boolean = false;
+  @Input() fromTeamLead: boolean = false;
   @Output() newEmployeeEvent = new EventEmitter<string>();
 
   employeeForm = this.fb.group({
     name: ['', Validators.required],
     phone: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    isTeamLead: [false, [Validators.required]],
-    isTeamHead: [false, [Validators.required]],
+    isTeamLead: [false],
+    isTeamHead: [false],
     department: ['', [Validators.required]],
   });
 
   constructor(private fb: FormBuilder, private appData: AppDataService) {}
 
   ngOnInit(): void {
-    let teams = this.appData.getTeams();
-    if (teams.length == 0) {
+    this.teams = this.appData.getTeams();
+    if (this.teams.length == 0) {
       this.employeeForm.controls['department'].patchValue(
         this.appData.DEPT_ORGANIZATION
       );
-      this.employeeForm.controls['department'].disabled;
+      this.employeeForm.controls['isTeamHead'].patchValue('true');
+      this.employeeForm.controls['isTeamLead'].patchValue('false');
     }
   }
 
@@ -41,5 +46,6 @@ export class AddEmployeeComponent implements OnInit {
       this.employeeForm.value.isTeamHead == 'true' ? true : false;
     this.appData.addEmployee(this.employeeForm.value, this.teamId);
     this.newEmployeeEvent.emit('Employee Added');
+    this.employeeForm.reset();
   }
 }

@@ -15,6 +15,9 @@ export class AppComponent implements OnInit {
   employeesTeams: Array<any> = [];
   selectedTeamId: number = 0;
   selectedEmployee: any;
+  fromTeamHead: boolean = false;
+  fromTeamLead: boolean = false;
+  fromCEO: boolean = false;
   viewMode: boolean = false;
   @ViewChild('viewEmployee') viewEmployee!: ViewEmployeeComponent;
   constructor(
@@ -25,13 +28,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.appData.getEmployeesFromStorage();
     this.appData.getTeamsFromStorage();
-    this.getEmployees();
-    this.getTeams();
-    this.getFormattedTeam();
+    this.refreshUI();
     setInterval(() => {
       this.appData.saveTeamsToStorage();
       this.appData.saveEmployeesToStorage();
     }, 1000);
+  }
+
+  refreshUI() {
+    this.getEmployees();
+    this.getTeams();
+    this.getFormattedTeam();
   }
 
   getEmployees() {
@@ -71,17 +78,19 @@ export class AppComponent implements OnInit {
 
   employeeAction(event: any) {
     let selectedEmployeeId = event.data;
-    let fromTeamHead = event.fromTeamHead;
+    this.fromTeamHead = event.fromTeamHead;
+    this.fromTeamLead = event.fromTeamLead;
+    this.fromCEO = event.fromCEO;
     if (event.op == 'view') {
       this.viewMode = true;
     } else {
       this.viewMode = false;
     }
-    if (!fromTeamHead) {
-      this.selectedEmployee = this.appData.getEmployee(selectedEmployeeId);
-    } else {
+    if (this.fromTeamHead || this.fromTeamLead) {
       this.selectedEmployee = this.appData.getTeamHead(selectedEmployeeId);
       this.selectedTeamId = selectedEmployeeId;
+    } else {
+      this.selectedEmployee = this.appData.getEmployee(selectedEmployeeId);
     }
   }
 }
