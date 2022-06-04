@@ -38,6 +38,7 @@ export class AddEmployeeComponent implements OnInit {
       this.employeeForm.controls['department'].patchValue(
         this.appData.DEPT_ORGANIZATION
       );
+      this.employeeForm.controls['department'].disable();
       this.employeeForm.controls['isTeamHead'].patchValue('true');
       this.employeeForm.controls['isTeamLead'].patchValue('false');
     }
@@ -49,6 +50,9 @@ export class AddEmployeeComponent implements OnInit {
       this.employeeForm.controls['department'].patchValue(
         this.employee.department
       );
+      if (this.employee.department == this.appData.DEPT_ORGANIZATION) {
+        this.employeeForm.controls['department'].disable();
+      }
     }
   }
 
