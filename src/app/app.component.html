@@ -8,9 +8,20 @@
   </div>
   <div class="detail-block">
     <app-add-employee
-      *ngIf="!viewMode"
+      *ngIf="!viewMode && operation == 'add'"
+      [operation]="operation"
       [teamId]="selectedTeamId"
       (newEmployeeEvent)="refreshUI()"
+      [fromCEO]="fromCEO"
+      [fromTeamHead]="fromTeamHead"
+      [fromTeamLead]="fromTeamLead"
+    >
+    </app-add-employee>
+    <app-add-employee
+      *ngIf="!viewMode && operation == 'edit'"
+      [operation]="operation"
+      [employee]="selectedEmployee"
+      (editEmployeeEvent)="refreshUI()"
       [fromCEO]="fromCEO"
       [fromTeamHead]="fromTeamHead"
       [fromTeamLead]="fromTeamLead"

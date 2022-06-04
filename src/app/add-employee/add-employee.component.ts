@@ -11,11 +11,15 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class AddEmployeeComponent implements OnInit {
   teams: any;
+  @Input() operation: string = 'add';
   @Input() teamId!: number;
+  @Input() employee!: Employee;
   @Input() fromCEO: boolean = false;
   @Input() fromTeamHead: boolean = false;
   @Input() fromTeamLead: boolean = false;
   @Output() newEmployeeEvent = new EventEmitter<string>();
+  @Output() editEmployeeEvent = new EventEmitter<string>();
+  buttonText = 'Add Employee';
 
   employeeForm = this.fb.group({
     name: ['', Validators.required],
@@ -37,6 +41,23 @@ export class AddEmployeeComponent implements OnInit {
       this.employeeForm.controls['isTeamHead'].patchValue('true');
       this.employeeForm.controls['isTeamLead'].patchValue('false');
     }
+    if (this.operation == 'edit') {
+      this.buttonText = 'Edit Employee';
+      this.employeeForm.controls['name'].patchValue(this.employee.name);
+      this.employeeForm.controls['phone'].patchValue(this.employee.phone);
+      this.employeeForm.controls['email'].patchValue(this.employee.email);
+      this.employeeForm.controls['department'].patchValue(
+        this.employee.department
+      );
+    }
+  }
+
+  doEmployeeOperation() {
+    if (this.operation == 'edit') {
+      this.editEmployee();
+    } else {
+      this.addEmployee();
+    }
   }
 
   addEmployee() {
@@ -44,8 +65,21 @@ export class AddEmployeeComponent implements OnInit {
       this.employeeForm.value.isTeamLead == 'true' ? true : false;
     this.employeeForm.value.isTeamHead =
       this.employeeForm.value.isTeamHead == 'true' ? true : false;
+    if (this.fromCEO) {
+      this.employeeForm.controls['isTeamHead'].patchValue('true');
+    }
     this.appData.addEmployee(this.employeeForm.value, this.teamId);
     this.newEmployeeEvent.emit('Employee Added');
+    this.employeeForm.reset();
+  }
+
+  editEmployee() {
+    this.employeeForm.value.isTeamLead =
+      this.employeeForm.value.isTeamLead == 'true' ? true : false;
+    this.employeeForm.value.isTeamHead =
+      this.employeeForm.value.isTeamHead == 'true' ? true : false;
+    this.appData.editEmployee(this.employeeForm.value, this.employee.id);
+    this.editEmployeeEvent.emit('Employee Edited');
     this.employeeForm.reset();
   }
 }

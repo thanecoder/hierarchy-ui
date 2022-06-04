@@ -73,6 +73,10 @@
       (click)="viewEmployee(teamId, true)"
     ></i>
     <i
+      class="bi bi-pencil"
+      (click)="editEmployee(teamId, fromCEO, fromTeamHead, false)"
+    ></i>
+    <i
       class="bi bi-plus-circle"
       style="margin: 0.3%"
       (click)="addTeamMember(teamId, fromCEO, fromTeamHead)"
@@ -89,6 +93,10 @@
       class="bi bi-eye"
       style="margin: 1%"
       (click)="viewEmployee(employeeId, false)"
+    ></i>
+    <i
+      class="bi bi-pencil"
+      (click)="editEmployee(employeeId, false, false, true)"
     ></i>
     <i
       *ngIf="isTeamLead == true"

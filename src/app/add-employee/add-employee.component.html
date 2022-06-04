@@ -1,4 +1,8 @@
-<form class="container" [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+<form
+  class="container"
+  [formGroup]="employeeForm"
+  (ngSubmit)="doEmployeeOperation()"
+>
   <div class="row mb-3">
     <label for="name" class="col-sm-2 col-form-label">Name</label>
     <div class="col-sm-10">
@@ -47,27 +51,6 @@
       />
     </div>
   </div>
-  <div *ngIf="teams.length > 0 && fromCEO">
-    <label class="form-check-label" for="isTeamHead">Is Team Head ?</label>
-    <div class="form-check">
-      <input
-        type="radio"
-        class="form-check-input"
-        id="yesTeamHead"
-        value="true"
-        formControlName="isTeamHead"
-      /><label for="yesTeamHead" class="form-check-label">Yes</label>
-    </div>
-    <div class="form-check">
-      <input
-        type="radio"
-        class="form-check-input"
-        id="noTeamHead"
-        value="false"
-        formControlName="isTeamHead"
-      /><label for="noTeamHead" class="form-check-label">No</label>
-    </div>
-  </div>
   <div *ngIf="teams.length > 0 && fromTeamHead">
     <label for="isTeamLead" class="form-check-label">Is Team Lead ?</label>
     <div class="form-check">
@@ -97,6 +80,6 @@
     [disabled]="!employeeForm.valid"
     class="btn btn-primary"
   >
-    Add Employee
+    {{ buttonText }}
   </button>
 </form>

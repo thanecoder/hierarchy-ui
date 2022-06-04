@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   fromTeamLead: boolean = false;
   fromCEO: boolean = false;
   viewMode: boolean = false;
+  operation: string = 'add';
   @ViewChild('viewEmployee') viewEmployee!: ViewEmployeeComponent;
   constructor(
     private appData: AppDataService,
@@ -85,6 +86,7 @@ export class AppComponent implements OnInit {
       this.viewMode = true;
     } else {
       this.viewMode = false;
+      this.operation = event.op;
     }
     if (this.fromTeamHead || this.fromTeamLead) {
       this.selectedEmployee = this.appData.getTeamHead(selectedEmployeeId);

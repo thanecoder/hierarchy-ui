@@ -58,6 +58,17 @@ export class AppDataService {
     this.employees.push(employee);
   }
 
+  editEmployee(employee: Employee, employeeId: number) {
+    this.employees.forEach((emp) => {
+      if (emp.id == employeeId) {
+        emp.name = employee.name;
+        emp.department = employee.department;
+        emp.phone = employee.phone;
+        emp.email = employee.email;
+      }
+    });
+  }
+
   addEmployeeToTeam(
     employeeId: number,
     teamId: number,

@@ -24,6 +24,21 @@ export class ViewHierarchyComponent implements OnInit {
     });
   }
 
+  editEmployee(
+    employeeId: any,
+    fromCEO: boolean,
+    fromTeamHead: boolean,
+    fromTeamLead: boolean
+  ) {
+    this.actionEvent.emit({
+      op: 'edit',
+      data: employeeId,
+      fromCEO: fromCEO,
+      fromTeamHead: fromTeamHead,
+      fromTeamLead: false,
+    });
+  }
+
   addTeamMember(teamId: any, fromCEO: boolean, fromTeamHead: boolean) {
     this.actionEvent.emit({
       op: 'add',
